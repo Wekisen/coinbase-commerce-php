@@ -15,21 +15,22 @@ class Util
     public static function convertToApiObject($response)
     {
         if ($response instanceof ApiResponse) {
-            $response = isset($response->bodyArray['data']) ? $response->bodyArray['data'] : null;
+            return json_decode($response->body)->data;
+            // $response = isset($response->bodyArray['data']) ? $response->bodyArray['data'] : null;
         }
 
-        if (is_array($response)) {
-            array_walk(
-                $response,
-                function (&$item) {
-                    $item = self::convertToApiObject($item);
-                }
-            );
-        }
+        // if (is_array($response)) {
+        //     array_walk(
+        //         $response,
+        //         function (&$item) {
+        //             $item = self::convertToApiObject($item);
+        //         }
+        //     );
+        // }
 
-        if (isset($response['resource']) && $resourceClass = self::getResourceClassByName($response['resource'])) {
-            return new $resourceClass($response);
-        }
+        // if (isset($response['resource']) && $resourceClass = self::getResourceClassByName($response['resource'])) {
+        //     return new $resourceClass($response);
+        // }
 
         return $response;
     }
